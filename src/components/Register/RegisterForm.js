@@ -1,34 +1,44 @@
 import React, {Component} from 'react';
 import {StyleSheet,View,Text,TextInput,Button} from 'react-native';
-import { RadioButton } from 'react-native-paper';
+import RadioGroup from 'react-native-radio-buttons-group';
 
 export default class RegisterForm extends Component{
     constructor(props){
-      super(props);
+      super(props);    
 
     this.state = {
-        checked: 'regStudent',
-        mcgillid:"",
-        phoneno:""
+        mcgillid:'',
+        phoneno:'',
+        regAsWlkr:'false',
+        studentorwalker: [
+          {
+              label: 'Register as a Walker!',
+              value: 'true'
+          },
+          {
+              label: 'Register as a Student!',
+              value:'false'
+          } 
+      ]
       };
-
     }
 
+    onPressRadio = studentorwalker => this.setState({ studentorwalker });
+    
     onPressRegisterButton() {
-      this.makeRegisterCall();
+      let selectedButton = this.state.studentorwalker.find(e => e.selected == true);
+      selectedButton = selectedButton ? selectedButton.value : this.state.studentorwalker[0].value;
+      this.makeRegisterCall(selectedButton);
     }
         
     render(){
-        const { checked } = this.state;
-        return(
+      return(
             <View style={styles.container}>   
-
                 <Text>McGill ID: </Text>
                 <TextInput style={styles.input}
                   placeholder="text"
                   returnKeyType="next"
                   placeholderTextColor="black"
-
                   onChangeText={text=>this.setState({mcgillid:text})}
                 />
                 <Text>Phone Number: </Text>
@@ -36,18 +46,8 @@ export default class RegisterForm extends Component{
                   placeholder="text"
                   placeholderTextColor="black"
                   onChangeText={text=>this.setState({phoneno:text})}
-                />r
-
-        <RadioButton
-          value="first"
-          status={checked === 'first' ? 'checked' : 'unchecked'}
-          onPress={() => { this.setState({ checked: 'first' }); }}
-        />
-        <RadioButton
-          value="second"
-          status={checked === 'second' ? 'checked' : 'unchecked'}
-          onPress={() => { this.setState({ checked: 'second' }); }}
-        />
+                />
+                <RadioGroup radioButtons={this.state.studentorwalker} onPress={this.onPressRadio} />
 
           <Button
               onPress={this.onPressRegisterButton.bind(this)}
@@ -55,30 +55,29 @@ export default class RegisterForm extends Component{
               color="#841584"
               accessibilityLabel="click here to register"
           />
-        
             </View>
         );
     }
 
 
-    async makeRegisterCall() {
+    async makeRegisterCall(selectedButton) {
       var data ={
         mcgillID:this.state.mcgillid, 
         phoneNo:this.state.phoneno,
-        regAsWlkr:false
       };
       try {
         let response = await fetch(
-         "http://192.168.0.13:8080/api/register/" + data.mcgillID +"/" + data.phoneNo +"/"+data.regAsWlkr,
+         "http://192.168.0.13:8080/api/register/" + data.mcgillID +"/" + data.phoneNo +"/"+selectedButton,
          {
            method: "POST"
         }
        );
         if (response.status >= 200 && response.status < 300) {
-           alert("authenticated successfully!!!");
+          let responseJson = response.json;
+          alert("json resp:" + responseJson.status);
         }
         else{
-          alert("posted:" + this.state.mcgillid + "  and" + this.state.phoneno);
+          alert("Unsuccesful" + response.status);
         }
       } catch (errors) {
         alert(errors);
