@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet,View,Text,TextInput,Button} from 'react-native';
+import {StyleSheet,View,Text,TextInput,Button, TouchableOpacity} from 'react-native';
 import RadioGroup from 'react-native-radio-buttons-group';
 
 export default class RegisterForm extends Component{
@@ -33,7 +33,7 @@ export default class RegisterForm extends Component{
         
     render(){
       return(
-            <View style={styles.container}>   
+          <View style={styles.container}>
                 <Text>McGill ID: </Text>
                 <TextInput style={styles.input}
                   placeholder="text"
@@ -48,13 +48,12 @@ export default class RegisterForm extends Component{
                   onChangeText={text=>this.setState({phoneno:text})}
                 />
                 <RadioGroup radioButtons={this.state.studentorwalker} onPress={this.onPressRadio} />
-
-          <Button
-              onPress={this.onPressRegisterButton.bind(this)}
-              title="Register!"
-              color="#841584"
-              accessibilityLabel="click here to register"
-          />
+          <TouchableOpacity
+            style={styles.registerButton}
+            onPress={this.onPressRegisterButton.bind(this)}
+            >
+                 <Text styles={styles.buttonText}>Register!</Text>
+          </TouchableOpacity>
             </View>
         );
     }
@@ -88,7 +87,7 @@ export default class RegisterForm extends Component{
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: .9, //to account for header bar.
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center'
@@ -100,5 +99,17 @@ const styles = StyleSheet.create({
     margin: 15,
     borderColor: '#7a42f4',
     borderWidth: 1
+  },
+  registerButton:{
+    position:'absolute',
+    bottom: 100,
+    padding: 10,
+    backgroundColor:'#DDDDDD',
+    alignItems:'center'
+  },
+  buttonText:{
+    fontSize:10, 
+    fontWeight:'bold',
+    color:'#4287f5'
   }
 });
