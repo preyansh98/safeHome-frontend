@@ -4,6 +4,7 @@ import RegisterForm from './src/components/Register/RegisterForm';
 import LoginForm from './src/components/Login/LoginForm'
 import {createStackNavigator, createAppContainer,HeaderBackButton} from 'react-navigation';
 import SplashScreen from './src/components/Splash/SplashScreen';
+import StudentDash from './src/components/Dashboard/Student/StudentDash';
 
 class HomeScreen extends Component{
   static navigationOptions={
@@ -11,7 +12,7 @@ class HomeScreen extends Component{
   }
   render(){
     return(
-      <SplashScreen/>
+      <StudentDash/>
     );
   }
 }

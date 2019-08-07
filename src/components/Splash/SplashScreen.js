@@ -13,11 +13,11 @@ const SplashScreen = () => {
             <Text style={styles.textStyle}>Welcome to SafeHome!</Text>
 
             <TouchableOpacity style={styles.buttons}>
-                <Text style={styles.buttonText}>Register >>></Text>
+                <Text style={styles.buttonText}>Register</Text>
             </TouchableOpacity>    
 
             <TouchableOpacity style={styles.buttons}>
-                <Text style={styles.buttonText}>Login >>></Text>
+                <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>    
         </View>
     );
@@ -45,7 +45,9 @@ const styles = StyleSheet.create({
         backgroundColor:'rgba(230, 230, 230,1)',
         height:40,
         marginTop:40,
-        width:'80%'
+        width:250,
+        height:40,
+        justifyContent:'center'
     },
     buttonText:{
         fontSize:18,
