@@ -1,13 +1,16 @@
 import React, {Component} from 'react'; 
-import {View, TextInput, Alert} from 'react-native'; 
-import { Container, Header, Item, Input, Content, Icon } from 'native-base';
+import {View, Text, Dimensions, StyleSheet} from 'react-native'; 
+import { Container, Header, Item, Input, Content, Icon, List,ListItem } from 'native-base';
+import AutocompleteEntry from './AutocompleteEntry';
 
-export default class LocationPicker extends Component { 
+const {width,height} = Dimensions.get('screen');
+
+export default class LocationEntry extends Component { 
 
   constructor(props){
     super(props); 
   }
-
+  
   state = {
     pickupLoc: {
       latitude: null,
@@ -23,14 +26,16 @@ export default class LocationPicker extends Component {
   render(){
     return(
         <Container>
-        <Header />
         <Content>
           <Item>
-            <Input placeholder="Enter your pickup address"/>
+            <Input autoFocus placeholder="Enter your pickup address" returnKeyType='next'/>
             <Icon style = {{marginRight: 10, color: "blue"}} active name = "paper-plane"/>
           </Item>
           <Item>
-            <Input placeholder="Enter your destination address" />
+            <Input placeholder="Enter your destination address" returnKeyType='done'/>
+          </Item>
+          <Item>
+            <AutocompleteEntry/>
           </Item>
         </Content>
       </Container>
@@ -64,3 +69,17 @@ export default class LocationPicker extends Component {
      } 
   }
 }
+
+const styles = StyleSheet.create({
+  buttonStyle:{
+    padding: 20,
+    marginTop: 50,
+    width: width*0.6, 
+    alignSelf: 'center', 
+    justifyContent: 'center'
+  }, 
+  buttonText: {
+    fontSize: 18,
+  }
+
+})

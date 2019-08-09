@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity } from 'react-native';
 import RadioGroup from 'react-native-radio-buttons-group';
-import { Container, Header, Item, Content, Input, Icon, Button, Left, Right, Body, Title } from 'native-base';
+import { Container, Spinner, Item, Content, Input, Icon, Button, Left, Right, Body, Title } from 'native-base';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -11,6 +11,7 @@ export default class RegisterForm extends Component {
   }
 
   state = {
+      spinner: false,
       idtext : '',
       phonetext: '',
       apiData: {
@@ -102,24 +103,16 @@ export default class RegisterForm extends Component {
   onPressRegisterButton() {
     let selectedButton = this.state.apiData.studentorwalker.find(e => e.selected == true);
     selectedButton = selectedButton ? selectedButton.value : this.state.apiData.studentorwalker[0].value;
-    this.makeRegisterCall(selectedButton);
+  //  this.makeRegisterCall(selectedButton);
+
+      this.props.navigation.navigate('StudentDash');
+
   }
 
   render() {
     return (
       <View style={styles.container}>
         <Container>
-          <Header>
-            <Left>
-              <Button transparent>
-                <Icon name='arrow-round-back' />
-              </Button>
-            </Left>
-            <Body>
-              <Title>Registration</Title>
-            </Body>
-            <Right />
-          </Header>
           <Content>
             <View style={styles.inputContainer}>
               <Item success style={styles.input}>

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'; 
 import {Text, StyleSheet, Dimensions, View, ScrollView} from 'react-native';
 import MapComponent from './Maps/MapComponent';
-import LocationPicker from './LocationPicker/LocationPicker';
+import LocationView from './LocationPicker/LocationView';
 
 const {width, height} = Dimensions.get('screen'); 
 
@@ -10,9 +10,6 @@ export default class StudentDash extends Component{
     constructor(props){
         super(props);
 
-        this.state={
-            
-        };
     }
 
     render(){
@@ -27,7 +24,7 @@ export default class StudentDash extends Component{
                     <MapComponent/>
                 </View>
                 <View style = {styles.locationContainer}>
-                   <LocationPicker/>
+                   <LocationView navigation={this.props.navigation}/>
                 </View>
                 </ScrollView>
             </View>

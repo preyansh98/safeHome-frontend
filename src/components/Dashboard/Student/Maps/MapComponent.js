@@ -28,7 +28,7 @@ export default class MapComponent extends Component{
 
     setRegion(region){
       if(this.state.ready){
-      setTimeout(() => this.map.animateToRegion(region), 10);
+      setTimeout(() => this.map.animateToRegion(region,1000), 10);
       }
     }
     
