@@ -26,8 +26,8 @@ export default class StudentDash extends Component{
                 <View style = {styles.mapContainer}>
                     <MapComponent/>
                 </View>
-                <View>
-                   
+                <View style = {styles.locationContainer}>
+                   <LocationPicker/>
                 </View>
                 </ScrollView>
             </View>
@@ -47,5 +47,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scrollContainerStyle: {
+    },
+    locationContainer: {
+        flex: 1, 
+        height: height*.3
     }
 });

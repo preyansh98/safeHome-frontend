@@ -23,7 +23,7 @@ export default class MapComponent extends Component{
 
     state={
             region: initialRegion, 
-            ready: false
+            ready: false,
           };
 
     setRegion(region){
@@ -68,7 +68,6 @@ export default class MapComponent extends Component{
 
         return(
             <View style = {styles.container}>
-              <ScrollView style = {styles.container} contentContainerStyle = {styles.contentContainer}>
                 <View style = {{flex:1}}>
                 <MapView
                     ref={ map => { this.map = map }}
@@ -81,7 +80,6 @@ export default class MapComponent extends Component{
                     style={{flex:1, height : height*0.7, width}}
                 />
                 </View>
-                </ScrollView>
             </View>
         );
     }
