@@ -6,6 +6,7 @@ import { createStackNavigator, createAppContainer, HeaderBackButton } from 'reac
 import SplashScreen from './src/components/Splash/SplashScreen';
 import StudentDash from './src/components/Dashboard/Student/StudentDash';
 import LocationEntry from './src/components/Dashboard/Student/LocationPicker/LocationEntry';
+import Globals from './src/components/Globals';
 
 class HomeScreen extends Component {
   static navigationOptions = {
@@ -89,6 +90,8 @@ const AppContainer = createAppContainer(RootStack);
 
 export default class App extends Component {
   render() {
+    //Set up all the global variables. 
+    Globals(); 
     return (
       <AppContainer />
     );

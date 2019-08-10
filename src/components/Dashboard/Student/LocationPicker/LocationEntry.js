@@ -28,14 +28,16 @@ export default class LocationEntry extends Component {
         <Container>
         <Content>
           <Item>
-            <Input autoFocus placeholder="Enter your pickup address" returnKeyType='next'/>
+            <Input autoFocus placeholder="Enter your pickup address" returnKeyType='next'
+              onChangeText={text => this.refs.autocomplete.changeTextHandler(text)}                   
+            />
             <Icon style = {{marginRight: 10, color: "blue"}} active name = "paper-plane"/>
           </Item>
           <Item>
             <Input placeholder="Enter your destination address" returnKeyType='done'/>
           </Item>
           <Item>
-            <AutocompleteEntry/>
+            <AutocompleteEntry ref = 'autocomplete'/>
           </Item>
         </Content>
       </Container>
