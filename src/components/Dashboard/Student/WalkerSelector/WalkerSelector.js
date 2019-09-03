@@ -7,7 +7,7 @@ export default class WalkerSelector extends Component{
         super(props);
 
         this.state={
-            potential_walkers = ""
+            potential_walkers: ""
         }
         let potential_walkers = loadWalkers();
     }

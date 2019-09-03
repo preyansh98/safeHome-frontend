@@ -11,102 +11,116 @@ export default class RegisterForm extends Component {
   }
 
   state = {
-      spinner: false,
-      idtext : '',
-      phonetext: '',
-      apiData: {
-        mcgillid: '',
-        phoneno: '',
-        regAsWlkr: 'false',
-        studentorwalker: [
-          {
-            label: 'Register as a Student!',
-            value: 'true'
-          },
-          {
-            label: 'Register as a Walker!',
-            value: 'false'
-          }
-        ]
-      },
-      input: {
-        id: {
-          valid: false, 
-          icon : 'close-circle',
-          iconColor : 'red'
+    navigable: false,
+    idtext: '',
+    phonetext: '',
+    apiData: {
+      regAsWlkr: 'false',
+      studentorwalker: [
+        {
+          label: 'Register as a Student!',
+          value: 'true'
         },
-        phone: {
-          valid: false, 
-          icon : 'close-circle',
-          iconColor : 'red',
+        {
+          label: 'Register as a Walker!',
+          value: 'false'
         }
+      ]
+    },
+    input: {
+      id: {
+        valid: false,
+        icon: 'close-circle',
+        iconColor: 'red'
+      },
+      phone: {
+        valid: false,
+        icon: 'close-circle',
+        iconColor: 'red',
       }
     }
+  }
 
   mcgillInputHandler = (text) => {
-    this.setState({idtext: text}, () => {
-    this.checkValid("id"); 
+    this.setState({ idtext: text }, () => {
+      this.checkValid("id");
     });
   }
 
   phoneInputHandler = (text) => {
-    this.setState({phonetext: text}, () => {
-    this.checkValid("phone"); 
+    this.setState({ phonetext: text }, () => {
+      this.checkValid("phone");
     });
   }
 
   checkValid(type) {
-    if(type=="id"){
-      let validBool = this.checkMcGillValid(this.state.idtext); 
-      let newInput = this.state.input; 
-        if(validBool && !this.state.input.id.valid){
-          newInput.id.valid = true; 
-          newInput.id.icon='checkmark-circle';
-          newInput.id.iconColor='green';
-          this.setState({input: newInput}); 
-        } else if(!validBool && this.state.input.id.valid){
-          newInput.id.valid = false; 
-          newInput.id.icon = 'close-circle',
-          newInput.id.iconColor = 'red', 
-          this.setState({input:newInput}); 
-        }
-    } else if(type=="phone"){
+    if (type == "id") {
+      let validBool = this.checkMcGillValid(this.state.idtext);
+      let newInput = this.state.input;
+      if (validBool && !this.state.input.id.valid) {
+        newInput.id.valid = true;
+        newInput.id.icon = 'checkmark-circle';
+        newInput.id.iconColor = 'green';
+        this.setState({ input: newInput });
+      } else if (!validBool && this.state.input.id.valid) {
+        newInput.id.valid = false;
+        newInput.id.icon = 'close-circle',
+          newInput.id.iconColor = 'red',
+          this.setState({ input: newInput });
+      }
+    } else if (type == "phone") {
       console.log("called!!!!");
       let validBool = this.checkPhoneValid(this.state.phonetext);
-      let newInput = this.state.input; 
-      if(validBool && !this.state.input.phone.valid){
-        newInput.phone.valid = true; 
-        newInput.phone.icon='checkmark-circle';
-        newInput.phone.iconColor='green';
-        this.setState({input: newInput}); 
-      } else if(!validBool && this.state.input.phone.valid){
-        newInput.phone.valid = false; 
+      let newInput = this.state.input;
+      if (validBool && !this.state.input.phone.valid) {
+        newInput.phone.valid = true;
+        newInput.phone.icon = 'checkmark-circle';
+        newInput.phone.iconColor = 'green';
+        this.setState({ input: newInput });
+      } else if (!validBool && this.state.input.phone.valid) {
+        newInput.phone.valid = false;
         newInput.phone.icon = 'close-circle',
-        newInput.phone.iconColor = 'red', 
-        this.setState({input:newInput}); 
-      }  
+          newInput.phone.iconColor = 'red',
+          this.setState({ input: newInput });
+      }
     }
   }
 
-  checkMcGillValid(id){
-    return (id.startsWith('260') && id.length == 9); 
+  checkMcGillValid(id) {
+    return (id.startsWith('260') && id.length == 9 && !isNaN(Number(id)));
   }
 
-  checkPhoneValid(phone){
+  checkPhoneValid(phone) {
     console.log("phone valid: " + phone);
-    return (!isNaN(Number(phone)) && phone.length==10);
+    return (!isNaN(Number(phone)) && phone.length == 10);
   }
-  
-    
+
+  bothValid() {
+    return (this.state.input.id.valid && this.state.input.phone.valid);
+  }
+
   onPressRadio = studentorwalker => this.setState({ studentorwalker });
 
   onPressRegisterButton() {
     let selectedButton = this.state.apiData.studentorwalker.find(e => e.selected == true);
     selectedButton = selectedButton ? selectedButton.value : this.state.apiData.studentorwalker[0].value;
-  //  this.makeRegisterCall(selectedButton);
-
-      this.props.navigation.navigate('StudentDash');
-
+    this.makeRegisterCall(selectedButton).then((responseJson) => {
+      if (responseJson.status == global.JSON_SUCCESS) {
+        //set mcgill id as global.
+        global.mcgill_id = this.state.idtext;
+      }
+    }).then(()=> {
+      this.makeLoginCall(selectedButton).then((responseJson) =>{
+        if(responseJson.status == global.JSON_SUCCESS){
+          console.log("logged in");
+          this.props.navigation.navigate('StudentDash');
+        }
+      }).catch(function (error){
+        alert(error);
+      })
+    }).catch(function(error){
+      alert(error);
+    });
   }
 
   render() {
@@ -116,11 +130,11 @@ export default class RegisterForm extends Component {
           <Content>
             <View style={styles.inputContainer}>
               <Item success style={styles.input}>
-                <Input placeholder='McGill ID' onChangeText={text => this.mcgillInputHandler(text)} returnKeyType='next'/>
+                <Input placeholder='McGill ID' onChangeText={text => this.mcgillInputHandler(text)} returnKeyType='next' />
                 <Icon name={this.state.input.id.icon} style={{ color: this.state.input.id.iconColor }} />
               </Item>
               <Item success style={styles.input}>
-                <Input placeholder='Phone Number' onChangeText={text=>this.phoneInputHandler(text)} returnKeyType='done' />
+                <Input placeholder='Phone Number' onChangeText={text => this.phoneInputHandler(text)} returnKeyType='done' />
                 <Icon name={this.state.input.phone.icon} style={{ color: this.state.input.phone.iconColor }} />
               </Item>
             </View>
@@ -128,7 +142,7 @@ export default class RegisterForm extends Component {
               <RadioGroup radioButtons={this.state.apiData.studentorwalker} onPress={this.onPressRadio} />
             </View>
             <View style={styles.buttonContainer}>
-              <Button success style={styles.button} onPress={this.onPressRegisterButton.bind(this)}><Text style={styles.buttontext}>Register!</Text></Button>
+              <Button disabled={!this.bothValid()} success style={styles.button} onPress={this.onPressRegisterButton.bind(this)}><Text style={styles.buttontext}>Register!</Text></Button>
             </View>
           </Content>
         </Container>
@@ -136,22 +150,49 @@ export default class RegisterForm extends Component {
     );
   }
 
-
-  async makeRegisterCall(selectedButton) {
+  async makeLoginCall(selectedButton) {
     var data = {
-      mcgillID: this.state.mcgillid,
-      phoneNo: this.state.phoneno,
-    };
+      mcgillID: this.state.idtext,
+      loginAsWlkr: !selectedButton
+    }
     try {
       let response = await fetch(
-        "http://192.168.0.18:8080/api/register/" + data.mcgillID + "/" + data.phoneNo + "/" + selectedButton,
+        global.API_ENDPOINT + "login/" + data.mcgillID + "/" + data.loginAsWlkr,
         {
           method: "POST"
         }
       );
       if (response.status >= 200 && response.status < 300) {
-        let responseJson = response.json;
-        alert("json resp:" + responseJson.status);
+        let responseJson = await response.json()
+        return responseJson;
+      }
+      else {
+        alert("Unsuccesful" + response.status);
+      }
+    } catch (errors) {
+      alert(errors);
+    }
+  }
+
+  async makeRegisterCall(selectedButton) {
+    if (this.bothValid()) {
+      var data = {
+        mcgillID: this.state.idtext,
+        phoneNo: this.state.phonetext,
+        regAsWlkr: !selectedButton
+      }
+    }
+    console.log("hitting: " + global.API_ENDPOINT + "register/" + data.mcgillID + "/" + data.phoneNo + "/" + data.regAsWlkr);
+    try {
+      let response = await fetch(
+        global.API_ENDPOINT + "register/" + data.mcgillID + "/" + data.phoneNo + "/" + data.regAsWlkr,
+        {
+          method: "POST"
+        }
+      );
+      if (response.status >= 200 && response.status < 300) {
+        let responseJson = await response.json()
+        return responseJson;
       }
       else {
         alert("Unsuccesful" + response.status);
