@@ -82,7 +82,7 @@ const RootStack = createStackNavigator(
     LocationEntry:LocationEntryScreen
   },
   {
-    initialRouteName: 'LocationEntry'
+    initialRouteName: 'Register'
   }
 );
 

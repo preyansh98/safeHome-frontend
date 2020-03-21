@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity } from 'react-native';
 import RadioGroup from 'react-native-radio-buttons-group';
 import { Container, Spinner, Item, Content, Input, Icon, Button, Left, Right, Body, Title } from 'native-base';
+import config from '../../config/config';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -69,7 +70,6 @@ export default class RegisterForm extends Component {
           this.setState({ input: newInput });
       }
     } else if (type == "phone") {
-      console.log("called!!!!");
       let validBool = this.checkPhoneValid(this.state.phonetext);
       let newInput = this.state.input;
       if (validBool && !this.state.input.phone.valid) {
@@ -91,7 +91,6 @@ export default class RegisterForm extends Component {
   }
 
   checkPhoneValid(phone) {
-    console.log("phone valid: " + phone);
     return (!isNaN(Number(phone)) && phone.length == 10);
   }
 
@@ -112,7 +111,6 @@ export default class RegisterForm extends Component {
     }).then(()=> {
       this.makeLoginCall(selectedButton).then((responseJson) =>{
         if(responseJson.status == global.JSON_SUCCESS){
-          console.log("logged in");
           this.props.navigation.navigate('StudentDash');
         }
       }).catch(function (error){
@@ -157,7 +155,7 @@ export default class RegisterForm extends Component {
     }
     try {
       let response = await fetch(
-        global.API_ENDPOINT + "login/" + data.mcgillID + "/" + data.loginAsWlkr,
+        config.backendUrls.loginAPI + data.mcgillID + "/" + data.loginAsWlkr,
         {
           method: "POST"
         }
@@ -182,10 +180,10 @@ export default class RegisterForm extends Component {
         regAsWlkr: !selectedButton
       }
     }
-    console.log("hitting: " + global.API_ENDPOINT + "register/" + data.mcgillID + "/" + data.phoneNo + "/" + data.regAsWlkr);
     try {
+      console.log(config.backendUrls.registerAPI);
       let response = await fetch(
-        global.API_ENDPOINT + "register/" + data.mcgillID + "/" + data.phoneNo + "/" + data.regAsWlkr,
+        config.backendUrls.registerAPI + data.mcgillID + "/" + data.phoneNo + "/" + data.regAsWlkr,
         {
           method: "POST"
         }
