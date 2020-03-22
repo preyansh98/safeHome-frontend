@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {StyleSheet,View,Text,Alert,Button, Dimensions, ScrollView} from 'react-native';
-import {MapView} from 'expo';
+import {StyleSheet,View,Alert,Dimensions} from 'react-native';
+import MapView from 'react-native-maps';
+import MapMarkers from './MapMarkers';
 
 const {width, height} = Dimensions.get('screen'); 
 
@@ -78,7 +79,12 @@ export default class MapComponent extends Component{
                     showsCompass={true}
                     rotateEnabled={false}
                     style={{flex:1, height : height*0.7, width}}
-                />
+                >
+                  <MapMarkers 
+                    visible = {this.props.markers_visible != null ? this.props.markers_visible : false}
+                    dest_lat = {this.props.markers_dest_lat != null ? this.props.markers_dest_lat : ""}
+                    dest_lng = {this.props.markers_dest_lng != null ? this.props.markers_dest_lng : ""}/>
+                  </MapView>
                 </View>
             </View>
         );

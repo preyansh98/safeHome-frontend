@@ -57,13 +57,26 @@ class LocationEntryScreen extends React.Component {
   }
 }
 
+class StudentRouteScreen extends React.Component {
+  static navigationOptions = {
+    header: null, 
+    gesturesEnabled: false
+  }
+  render(){
+    return(
+      <StudentRoute navigation = {this.props.navigation}/>
+    );
+  }
+}
+
 
 const RootStack = createStackNavigator(
   {
     Splash: HomeScreen,
     Register: RegisterScreen,
     StudentDash: StudentDashboardScreen,
-    LocationEntry:LocationEntryScreen
+    LocationEntry:LocationEntryScreen,
+    StudentRoute:StudentRouteScreen
   },
   {
     initialRouteName: 'StudentDash'
