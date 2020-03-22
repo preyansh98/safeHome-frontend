@@ -155,7 +155,7 @@ export default class RegisterForm extends Component {
     }
     try {
       let response = await fetch(
-        config.backendUrls.loginAPI + data.mcgillID + "/" + data.loginAsWlkr,
+        config.backendUrls.loginAPI + "/" + data.mcgillID + "/" + data.loginAsWlkr,
         {
           method: "POST"
         }
@@ -181,9 +181,8 @@ export default class RegisterForm extends Component {
       }
     }
     try {
-      console.log(config.backendUrls.registerAPI);
       let response = await fetch(
-        config.backendUrls.registerAPI + data.mcgillID + "/" + data.phoneNo + "/" + data.regAsWlkr,
+        config.backendUrls.registerAPI + "/" + data.mcgillID + "/" + data.phoneNo + "/" + data.regAsWlkr,
         {
           method: "POST"
         }

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, Dimensions, StyleSheet } from 'react-native';
 import { Container, Right, Item, Input, Content, Icon, List, ListItem, Button } from 'native-base';
-import AutocompleteEntry from './AutocompleteEntry';
+import {GMAPS_API_KEY} from 'react-native-dotenv';
+import config from '../../../../config/config';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -122,7 +123,7 @@ export default class LocationEntry extends Component {
 
   makeQueryMap() {
     let queryMap = new Map();
-    queryMap.set('key', global.MAPS_API_KEY);
+    queryMap.set('key', GMAPS_API_KEY);
     queryMap.set('input', (this.state.pickupSet) ? this.state.destTextToQuery
     : this.state.pickupTextToQuery);
     queryMap.set('sessiontoken', Math.random().toString(36).substring(4));
@@ -172,7 +173,7 @@ export default class LocationEntry extends Component {
 
   makeGeocodeMap(addressToQuery) {
     let queryMap = new Map();
-    queryMap.set('key', global.MAPS_API_KEY);
+    queryMap.set('key', GMAPS_API_KEY);
     queryMap.set('address', encodeURI(addressToQuery));
     queryMap.set('components', 'country:ca');
 
@@ -212,7 +213,6 @@ export default class LocationEntry extends Component {
   geocodeAndCreateRequest() {
 
     this.geocodeLocations(this.state.pickupTextToQuery).then(response => {
-      console.log("picked up result: " + response);
       if (response.status == "OK") {
         let pickup_coords = this.state.pickupLoc;
         console.log("the latitude is: " + response.results[0].geometry.location.lat);
@@ -297,11 +297,9 @@ export default class LocationEntry extends Component {
       pickup_location: this.state.pickupLoc,
       destination_location: this.state.destLoc
     };
-    console.log("hitting endpoint:" + encodeURI(
-      global.API_ENDPOINT + "createRequest/" + data.mcgillID + this.returnCreateReqQueryString()));
     try {
       let response = await fetch(encodeURI(
-        global.API_ENDPOINT + "createRequest/" + data.mcgillID + this.returnCreateReqQueryString()),
+        config.backendUrls.createRequestAPI + "/" + data.mcgillID + this.returnCreateReqQueryString()),
         {
           method: "POST"
         }

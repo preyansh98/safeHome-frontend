@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import RegisterForm from './src/components/Register/RegisterForm';
-import LoginForm from './src/components/Login/LoginForm'
 import { createStackNavigator, createAppContainer, HeaderBackButton } from 'react-navigation';
 import SplashScreen from './src/components/Splash/SplashScreen';
 import StudentDash from './src/components/Dashboard/Student/StudentDash';
@@ -33,20 +32,6 @@ class RegisterScreen extends Component {
   }
 }
 
-class LoginScreen extends React.Component {
-  static navigationOptions = {
-    title: "Login",
-    headerLeft: (
-      <HeaderBackButton onPress={() => (alert("No back action yet!"))} />
-    )
-  }
-  render() {
-    return (
-      <LoginForm />
-    );
-  }
-}
-
 class StudentDashboardScreen extends React.Component {
   static navigationOptions = {
     header: null
@@ -67,7 +52,7 @@ class LocationEntryScreen extends React.Component {
   }
   render(){
     return(
-      <LocationEntry/>
+      <LocationEntry navigation={this.props.navigation}/>
     );
   }
 }
@@ -77,12 +62,11 @@ const RootStack = createStackNavigator(
   {
     Splash: HomeScreen,
     Register: RegisterScreen,
-    Login: LoginScreen,
     StudentDash: StudentDashboardScreen,
     LocationEntry:LocationEntryScreen
   },
   {
-    initialRouteName: 'Register'
+    initialRouteName: 'StudentDash'
   }
 );
 

@@ -1,5 +1,6 @@
 import {React, Component} from 'react'; 
 import {View, Text, StyleSheet} from 'react-native';
+import config from '../../../../config/config';
 
 export default class WalkerRow extends Component{
     constructor(props){
@@ -37,7 +38,7 @@ export default class WalkerRow extends Component{
           };
           try {
             let response = await fetch(encodeURI(
-             "http://192.168.0.13:8080/api/" + "selectWalkerReq/" + data.studentID + "/" + "?walkerID=" + selectedWalkerID),
+             config.backendUrls.selectWalkerAPI + "/" + data.studentID + "/" + "?walkerID=" + selectedWalkerID),
              {
                method: "POST"
             }
