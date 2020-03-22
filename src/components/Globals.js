@@ -1,4 +1,7 @@
+import {BACKEND_BASE_URL} from 'react-native-dotenv';
+
 const Globals = () => {
+    console.log(BACKEND_BASE_URL +"-0ADFAE");
     global.JSON_SUCCESS = "success";
     //for use within session
     global.mcgill_id = "";

@@ -21,8 +21,8 @@ export default class WalkerRow extends Component{
             <View>
                 <Text>{this.props.walker_name}</Text>
                 <Text>Rating: {this.props.walker_rating}</Text>
+                
                 <TouchableOpacity
-                style={}
                 onPress={this.onPressSelectButton.bind(this)}
                 >       
                     <Text styles={styles.buttonText}>Select</Text>

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Text, StyleSheet, Dimensions, View, ScrollView} from 'react-native';
 import MapComponent from '../../Dashboard/Student/Maps/MapComponent';
-
+import WalkerSelector from '../Student/WalkerSelector/WalkerSelector';
 
 const {width, height} = Dimensions.get('screen');
 
@@ -33,7 +33,7 @@ export default class StudentRoute extends Component {
                     />
                 </View>
                 <View style = {styles.locationContainer}>
-                   <Text> On the route screen </Text>
+                   <WalkerSelector />
                 </View>
                 </ScrollView>
             </View>

@@ -1,6 +1,7 @@
 import {React, Component} from 'react'; 
 import {Text, View, StyleSheet} from 'react-native'; 
 import WalkerRow from './WalkerRow'; 
+import config from '../../../../config/config';
 
 export default class WalkerSelector extends Component{
     constructor(props){
@@ -29,17 +30,12 @@ export default class WalkerSelector extends Component{
     }
 }
 
-function loadWalkers(){
+async function loadWalkers(){
     var data ={
         mcgillID:this.state.mcgillid, 
       };
       try {
-        let response = await fetch(encodeURI(
-         "http://192.168.0.13:8080/api/" + "view_walkers/"),
-         {
-           method: "GET"
-        }
-       );
+        let response = await fetch(config.backendUrls.viewWalkerAPI);
         if (response.status >= 200 && response.status < 300) {
           let responseJson = response.json;
           return responseJson; 
