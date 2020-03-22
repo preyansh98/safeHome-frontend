@@ -12,8 +12,13 @@ export default class LocationEntry extends Component {
     super(props);
   }
 
+  async componentDidMount(){
+    this.setState({autocomplete_session_token : Math.random().toString(36).substring(4)});
+  }
+
   state = {
     submitReady: false,
+    autocomplete_session_token: "",
     pickupLoc: {
       latitude: null,
       longitude: null
@@ -126,7 +131,7 @@ export default class LocationEntry extends Component {
     queryMap.set('key', GMAPS_API_KEY);
     queryMap.set('input', (this.state.pickupSet) ? this.state.destTextToQuery
     : this.state.pickupTextToQuery);
-    queryMap.set('sessiontoken', Math.random().toString(36).substring(4));
+    queryMap.set('sessiontoken', this.state.autocomplete_session_token);
     queryMap.set('types', 'address');
     queryMap.set('components', 'country:ca');
 
@@ -300,8 +305,7 @@ export default class LocationEntry extends Component {
       destination_location: this.state.destLoc
     };
     try {
-      let response = await fetch(encodeURI(
-        config.backendUrls.createRequestAPI + "/" + data.mcgillID + this.returnCreateReqQueryString()),
+      let response = await fetch(encodeURI(config.backendUrls.createRequestAPI + "/" + data.mcgillID + this.returnCreateReqQueryString()),
         {
           method: "POST"
         }
@@ -311,7 +315,7 @@ export default class LocationEntry extends Component {
         return responseJson; 
       }
       else {
-        alert("Unsuccesful" + response.status);
+        alert("Unsuccesful create req" + response.status);
         return {success : "no"};
       }
     } catch (errors) {
@@ -321,12 +325,7 @@ export default class LocationEntry extends Component {
 
   async makeAutocompleteCall() {
     try {
-        let response = await fetch(
-            "https://maps.googleapis.com/maps/api/place/autocomplete/json" + this.returnQueryString(),
-            {
-                method: "GET"
-            }
-        );
+        let response = await fetch("https://maps.googleapis.com/maps/api/place/autocomplete/json" + this.returnQueryString());
         if (response.status >= 200 && response.status < 300) {
             let responseJson = await response.json();
             this.mapPlaceResponseToState(responseJson); 

@@ -1,27 +1,42 @@
-import {React, Component} from 'react'; 
-import {Text, View, StyleSheet} from 'react-native'; 
+import React, {Component} from 'react'; 
+import {Text, View } from 'react-native'; 
 import WalkerRow from './WalkerRow'; 
 import config from '../../../../config/config';
 
 export default class WalkerSelector extends Component{
     constructor(props){
         super(props);
+    }
 
-        this.state={
-            potential_walkers: ""
-        }
-        let potential_walkers = loadWalkers();
+    async componentDidMount() {
+        let walkers = await this.getPotentialWalkers(); 
+        this.setState({potential_walkers : walkers}); 
+    }
+
+    async getPotentialWalkers(){
+        let response = await fetch(config.backendUrls.viewWalkerAPI + "/" + global.mcgill_id);
+        let resJson = response.json(); 
+        
+        if(resJson.status >= 200 && resJson.status <= 300){
+            this.setState({potential_walkers: resJson});
+        } 
+    }
+
+    state = {
+        mcgillId: '',
+        potential_walkers: []
     }
 
     render(){
         return(
             //make a design for the table, in which the rows will go.
             <View>
-                {potential_walkers.array.forEach(element => {
+                {this.state.potential_walkers &&
+                 this.state.potential_walkers.forEach(walker => {
                     <WalkerRow
-                    walker_id = {element}
-                    walker_name = {element}
-                    walker_rating = {element}
+                    walker_id = {"random id"}
+                    walker_name = {"no names"}
+                    walker_rating = {walker.rating}
                     />  
                 })
                 }
@@ -29,23 +44,3 @@ export default class WalkerSelector extends Component{
         ); 
     }
 }
-
-async function loadWalkers(){
-    var data ={
-        mcgillID:this.state.mcgillid, 
-      };
-      try {
-        let response = await fetch(config.backendUrls.viewWalkerAPI);
-        if (response.status >= 200 && response.status < 300) {
-          let responseJson = response.json;
-          return responseJson; 
-        }
-        else{
-          alert("Unsuccesful" + response.status);
-        }
-      } catch (errors) {
-        alert(errors);
-       } 
-    return "error"; 
-}
-
