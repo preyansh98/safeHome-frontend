@@ -5,6 +5,7 @@ import { createStackNavigator, createAppContainer, HeaderBackButton } from 'reac
 import SplashScreen from './src/components/Splash/SplashScreen';
 import StudentDash from './src/components/Dashboard/Student/StudentDash';
 import LocationEntry from './src/components/Dashboard/Student/LocationPicker/LocationEntry';
+import StudentRoute from './src/components/RouteView/Student/StudentRoute';
 import Globals from './src/components/Globals';
 
 class HomeScreen extends Component {
@@ -79,7 +80,7 @@ const RootStack = createStackNavigator(
     StudentRoute:StudentRouteScreen
   },
   {
-    initialRouteName: 'StudentDash'
+    initialRouteName: 'Register'
   }
 );
 

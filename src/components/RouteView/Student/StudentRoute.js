@@ -26,8 +26,10 @@ export default class StudentRoute extends Component {
                 <View style = {styles.mapContainer}>
                     <MapComponent 
                         markers_visible = {true}
-                        markers_dest_lat = {this.props.dest_lat}
-                        markers_dest_lng = {this.props.dest_lng}
+                        markers_pickup_lat = {this.props.navigation.getParam('pickup_lat', -1)}
+                        markers_pickup_lng = {this.props.navigation.getParam('pickup_lng',-1)}
+                        markers_dest_lat = {this.props.navigation.getParam('dest_lat',-1)}
+                        markers_dest_lng = {this.props.navigation.getParam('dest_lng',-1)}
                     />
                 </View>
                 <View style = {styles.locationContainer}>

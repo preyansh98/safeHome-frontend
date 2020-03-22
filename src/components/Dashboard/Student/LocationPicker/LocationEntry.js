@@ -115,7 +115,7 @@ export default class LocationEntry extends Component {
     } else {
       return this.state.suggestions.map((item) => {
         return (
-          <ListItem button onPress={() => { this.suggestionClicked(item) }}><Text>{item}</Text></ListItem>
+          <ListItem key={"_"+item} button onPress={() => { this.suggestionClicked(item) }}><Text>{item}</Text></ListItem>
         );
       });
     }
@@ -259,10 +259,12 @@ export default class LocationEntry extends Component {
     global.pickup_lng = this.state.pickupLoc.longitude;
     global.dest_lat= this.state.destLoc.latitude;
     global.dest_lng= this.state.destLoc.longitude;
-
+  
     setTimeout(() => this.props.navigation.navigate( 'StudentRoute', {
+        pickup_lat: this.state.pickupLoc.latitude, 
+        pickup_lng: this.state.pickupLoc.longitude,
         dest_lat : this.state.destLoc.latitude, 
-        dest_lng : this.state.destLoc.dest_lng,
+        dest_lng : this.state.destLoc.longitude,
     }), 500);
   }
 
@@ -310,6 +312,7 @@ export default class LocationEntry extends Component {
       }
       else {
         alert("Unsuccesful" + response.status);
+        return {success : "no"};
       }
     } catch (errors) {
       alert(errors);
