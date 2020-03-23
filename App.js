@@ -51,20 +51,20 @@ class LocationEntryScreen extends React.Component {
       <HeaderBackButton onPress={() => (alert("No back action yet!"))} />
     )
   }
-  render(){
-    return(
-      <LocationEntry navigation={this.props.navigation}/>
+  render() {
+    return (
+      <LocationEntry navigation={this.props.navigation} />
     );
   }
 }
 
 class StudentRouteScreen extends React.Component {
   static navigationOptions = {
-    header: null, 
+    header: null,
   }
-  render(){
-    return(
-      <StudentRoute navigation = {this.props.navigation}/>
+  render() {
+    return (
+      <StudentRoute navigation={this.props.navigation} />
     );
   }
 }
@@ -75,8 +75,8 @@ const RootStack = createStackNavigator(
     Splash: HomeScreen,
     Register: RegisterScreen,
     StudentDash: StudentDashboardScreen,
-    LocationEntry:LocationEntryScreen,
-    StudentRoute:StudentRouteScreen
+    LocationEntry: LocationEntryScreen,
+    StudentRoute: StudentRouteScreen
   },
   {
     initialRouteName: 'Register'
@@ -88,7 +88,7 @@ const AppContainer = createAppContainer(RootStack);
 export default class App extends Component {
   render() {
     //Set up all the global variables. 
-    Globals(); 
+    Globals();
     return (
       <AppContainer />
     );

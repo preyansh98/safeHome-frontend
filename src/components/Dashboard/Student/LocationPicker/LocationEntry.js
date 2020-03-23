@@ -152,30 +152,6 @@ export default class LocationEntry extends Component {
     return queryString;
   }
 
-  makeCreateReqMap() {
-    let queryMap = new Map();
-    queryMap.set('pickup_lat', this.state.pickupLoc.latitude);
-    queryMap.set('pickup_long', this.state.pickupLoc.longitude);
-    queryMap.set('dest_lat', this.state.destLoc.latitude);
-    queryMap.set('dest_long', this.state.destLoc.longitude);
-
-    return queryMap;
-  }
-
-  returnCreateReqQueryString() {
-    let queryMap = this.makeCreateReqMap();
-    let queryString = "";
-
-    let counter = 0;
-    queryMap.forEach((value, key) => {
-      //for get url query params. start with ?, other params start with &.
-      (counter == 0) ? (queryString += "?" + key + "=" + value) : (queryString += "&" + key + "=" + value);
-      counter++;
-    });
-
-    return queryString;
-  }
-
   makeGeocodeMap(addressToQuery) {
     let queryMap = new Map();
     queryMap.set('key', GMAPS_API_KEY);
