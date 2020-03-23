@@ -61,7 +61,6 @@ class LocationEntryScreen extends React.Component {
 class StudentRouteScreen extends React.Component {
   static navigationOptions = {
     header: null, 
-    gesturesEnabled: false
   }
   render(){
     return(

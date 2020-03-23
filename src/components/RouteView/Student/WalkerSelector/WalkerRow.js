@@ -1,19 +1,28 @@
 import React, {Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import config from '../../../../config/config';
 
 export default class WalkerRow extends Component {
-  constructor(props) {
+  constructor(props) {    
+    console.log("in walker row");
     super(props);
   }
 
-  state = {
-    mcgillid: ''
+  async componentDidMount(){
+    this.setState({walkerId : this.props.walkerId});
+    this.setState({walkerRating : this.props.walkerRating});
+    this.setState({isWalksafe: this.props.walkerIsWalksafe});
   }
 
-  onPressSelectButton() {
-    let selectedWalkerID = this.props.walker_id;
-    this.selectWalkerCall(selectedWalkerID);
+  state = {
+    walkerId: "",
+    walkerRating: 0.0,
+    isWalksafe: false
+  }
+
+  onPressSelectButton(id) {
+    this.props.onClickWalker(id);
+    //ui change.
   }
 
   render() {
@@ -21,16 +30,41 @@ export default class WalkerRow extends Component {
       //make a component of a list type thing.
       //select button in each, should be tied to that walker. 
       <View>
-        <Text>{this.props.walker_name}</Text>
-        <Text>Rating: {this.props.walker_rating}</Text>
+        <Text>{this.state.walkerId}</Text>
+        <Text>Rating: {this.state.walkerRating}</Text>
 
         <TouchableOpacity
-          onPress={this.onPressSelectButton.bind(this)}
+          onPress={() => {this.onPressSelectButton(this.state.walkerId)}}
         >
-          <Text styles={styles.buttonText}>Select</Text>
+          <Text>Select</Text>
         </TouchableOpacity>
       </View>
     );
+  }
+
+  async createRequest() {
+    var data = {
+      mcgillID: global.mcgill_id,
+      pickup_location: this.state.pickupLoc,
+      destination_location: this.state.destLoc
+    };
+    try {
+      let response = await fetch(encodeURI(config.backendUrls.createRequestAPI + "/" + data.mcgillID + this.returnCreateReqQueryString()),
+        {
+          method: "POST"
+        }
+      );
+      if (response.status >= 200 && response.status < 300) {
+        let responseJson = await response.json();
+        return responseJson; 
+      }
+      else {
+        alert("Unsuccesful create req" + response.status);
+        return {success : "no"};
+      }
+    } catch (errors) {
+      alert(errors);
+    }
   }
 
   async selectWalkerCall(selectedWalkerID) {

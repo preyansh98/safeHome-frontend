@@ -2,44 +2,52 @@ import React, {Component} from 'react';
 import {Text, View } from 'react-native'; 
 import WalkerRow from './WalkerRow'; 
 import config from '../../../../config/config';
+import { Button } from 'native-base';
 
 export default class WalkerSelector extends Component{
     constructor(props){
         super(props);
     }
 
-    async componentDidMount() {
-        let walkers = await this.getPotentialWalkers(); 
-        this.setState({potential_walkers : walkers}); 
+    async componentDidMount(){
+        let walkers = await this.getPotentialWalkers();
+        this.setState({potential_walkers : walkers});
     }
 
     async getPotentialWalkers(){
         let response = await fetch(config.backendUrls.viewWalkerAPI + "/" + global.mcgill_id);
-        let resJson = response.json(); 
-        
-        if(resJson.status >= 200 && resJson.status <= 300){
-            this.setState({potential_walkers: resJson});
-        } 
+                
+        if(response.status >= 200 && response.status <= 300){
+            let resJson = await response.json(); 
+            return resJson;
+        } else
+            return []; 
     }
 
     state = {
         mcgillId: '',
-        potential_walkers: []
+        potential_walkers: [],
+        selectedWalkerId: '', 
+    }
+
+    selectedWalker = (id) => {
+        this.setState({selectedWalkerId : id});
     }
 
     render(){
         return(
-            //make a design for the table, in which the rows will go.
             <View>
-                {this.state.potential_walkers &&
-                 this.state.potential_walkers.forEach(walker => {
+                {this.state.potential_walkers && 
+                    this.state.potential_walkers.map((walker, idx) => (
                     <WalkerRow
-                    walker_id = {"random id"}
-                    walker_name = {"no names"}
-                    walker_rating = {walker.rating}
+                        key = {idx}
+                        walkerId = {walker.walkerid}
+                        walkerIsWalksafe = {walker.walksafe}
+                        walkerRating = {walker.rating}
+                        onClickWalker = {this.selectedWalker}
                     />  
-                })
-                }
+                ))}
+                <Button><Text>CONFIRM</Text></Button>
             </View>
         ); 
     }
