@@ -60,18 +60,33 @@ export default class MapComponent extends Component {
 
   onMapReady = (e) => {
     if (!this.state.ready) {
-      this.setState({ ready: true });
+      this.setState({ ready: true }, () => this.zoomToMapMarkers());
     }
   };
+
+  zoomToMapMarkers = () => {
+    if (this.props.markers_visible) {
+      setTimeout(() => {
+        this.map.fitToSuppliedMarkers(['mk1', 'mk2'], {
+          edgePadding: {
+            top: 100,
+            bottom: 100,
+            left: 100,
+            right: 100
+          }
+        })
+      }, 500)
+    }
+  }
 
   renderPolygon = () => {
     if (this.props.markers_visible) {
       return (
         <MapViewDirections
-          origin = {this.props.markers_pickup_lat + "," + this.props.markers_pickup_lng}
-          destination = {this.props.markers_dest_lat + "," + this.props.markers_dest_lng}
-          apikey = {GMAPS_API_KEY}
-          mode = "WALKING"
+          origin={this.props.markers_pickup_lat + "," + this.props.markers_pickup_lng}
+          destination={this.props.markers_dest_lat + "," + this.props.markers_dest_lng}
+          apikey={GMAPS_API_KEY}
+          mode="WALKING"
           strokeWidth={3}
           strokeColor="blue"
         />
@@ -88,8 +103,11 @@ export default class MapComponent extends Component {
             onMapReady={this.onMapReady}
             provider={MapView.PROVIDER_GOOGLE}
             initialRegion={initialRegion}
-            showsUserLocation={true}
-            showsCompass={true}
+            showsUserLocation
+            showsCompass
+            loadingEnabled
+            showsMyLocationButton
+            followsUserLocation
             rotateEnabled={false}
             style={{ flex: 1, height: height * 0.7, width }}
           >
