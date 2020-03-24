@@ -108,17 +108,10 @@ export default class RegisterForm extends Component {
         //set mcgill id as global.
         global.mcgill_id = this.state.idtext;
       }
-    }).then(()=> {
-      this.makeLoginCall(selectedButton).then((responseJson) =>{
-        if(responseJson.status == global.JSON_SUCCESS){
-          this.props.navigation.navigate('StudentDash');
-        }
-      }).catch(function (error){
+    }).then(() => this.props.navigation.navigate('StudentDash'))
+      .catch(function (error) {
         alert(error);
-      })
-    }).catch(function(error){
-      alert(error);
-    });
+      });
   }
 
   render() {
@@ -146,30 +139,6 @@ export default class RegisterForm extends Component {
         </Container>
       </View>
     );
-  }
-
-  async makeLoginCall(selectedButton) {
-    var data = {
-      mcgillID: this.state.idtext,
-      loginAsWlkr: !selectedButton
-    }
-    try {
-      let response = await fetch(
-        config.backendUrls.loginAPI + "/" + data.mcgillID + "/" + data.loginAsWlkr,
-        {
-          method: "POST"
-        }
-      );
-      if (response.status >= 200 && response.status < 300) {
-        let responseJson = await response.json()
-        return responseJson;
-      }
-      else {
-        alert("Unsuccesful" + response.status);
-      }
-    } catch (errors) {
-      alert(errors);
-    }
   }
 
   async makeRegisterCall(selectedButton) {

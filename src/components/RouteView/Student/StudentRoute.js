@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, StyleSheet, Dimensions, View, ScrollView } from 'react-native';
 import MapComponent from '../../Dashboard/Student/Maps/MapComponent';
 import WalkerSelector from '../Student/WalkerSelector/WalkerSelector';
+import config from '../../../config/config';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -9,6 +10,8 @@ export default class StudentRoute extends Component {
 
     constructor(props) {
         super(props);
+        this.returnCreateReqQueryString = this.returnCreateReqQueryString.bind(this);
+        this.makeCreateReqMap = this.makeCreateReqMap.bind(this);
     }
 
     async componentDidMount() {
@@ -25,18 +28,18 @@ export default class StudentRoute extends Component {
         dest_lng: -1
     }
 
-    makeCreateReqMap(selectedWalkerId) {
+    makeCreateReqMap = (selectedWalkerId) => {
         let queryMap = new Map();
         queryMap.set('pickup_lat', this.state.pickup_lat);
         queryMap.set('pickup_long', this.state.pickup_lng);
         queryMap.set('dest_lat', this.state.dest_lat);
         queryMap.set('dest_long', this.state.dest_lng);
-        queryMap.set('selectedWalker', selectedWalkerId);
+        queryMap.set('selectedWalkerId', selectedWalkerId);
 
         return queryMap;
     }
 
-    returnCreateReqQueryString(selectedWalkerId) {
+    returnCreateReqQueryString = (selectedWalkerId) => {
         let queryMap = this.makeCreateReqMap(selectedWalkerId);
         let queryString = "";
 
@@ -57,8 +60,8 @@ export default class StudentRoute extends Component {
 
             if (response.status >= 200 && response.status < 300) {
                 let responseJson = await response.json();
-                console.log("Request succesfully created");
                 //move to walker wait flow. 
+                alert("Your request was succesfully sent. The corresponding walker will be pinged.");
                 return responseJson;
             }
             else {
@@ -88,7 +91,7 @@ export default class StudentRoute extends Component {
                     </View>
                     <View style={styles.locationContainer}>
                         <WalkerSelector
-                            createRequest={this.createRequest}
+                            createRequest={this.createRequest.bind(this)}
                         />
                     </View>
                 </ScrollView>

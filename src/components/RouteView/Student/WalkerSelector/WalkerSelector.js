@@ -49,7 +49,10 @@ export default class WalkerSelector extends Component {
                     </List>
                 </ScrollView>
                 <Button block iconRight dark style={styles.confirmButton}
-                    onPress={() => this.props.createRequest(this.state.selectedWalkerId)}>
+                    onPress={(e) => {
+                        e.preventDefault();
+                        this.props.createRequest(this.state.selectedWalkerId)
+                    }}>
                     <Text style={{ color: "white" }}>Confirm</Text>
                 </Button>
             </View>
