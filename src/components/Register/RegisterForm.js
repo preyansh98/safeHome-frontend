@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity } from 'react-native';
 import RadioGroup from 'react-native-radio-buttons-group';
 import { Container, Spinner, Item, Content, Input, Icon, Button, Left, Right, Body, Title } from 'native-base';
+import config from '../../config/config';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -69,7 +70,6 @@ export default class RegisterForm extends Component {
           this.setState({ input: newInput });
       }
     } else if (type == "phone") {
-      console.log("called!!!!");
       let validBool = this.checkPhoneValid(this.state.phonetext);
       let newInput = this.state.input;
       if (validBool && !this.state.input.phone.valid) {
@@ -91,7 +91,6 @@ export default class RegisterForm extends Component {
   }
 
   checkPhoneValid(phone) {
-    console.log("phone valid: " + phone);
     return (!isNaN(Number(phone)) && phone.length == 10);
   }
 
@@ -109,18 +108,10 @@ export default class RegisterForm extends Component {
         //set mcgill id as global.
         global.mcgill_id = this.state.idtext;
       }
-    }).then(()=> {
-      this.makeLoginCall(selectedButton).then((responseJson) =>{
-        if(responseJson.status == global.JSON_SUCCESS){
-          console.log("logged in");
-          this.props.navigation.navigate('StudentDash');
-        }
-      }).catch(function (error){
+    }).then(() => this.props.navigation.navigate('StudentDash'))
+      .catch(function (error) {
         alert(error);
-      })
-    }).catch(function(error){
-      alert(error);
-    });
+      });
   }
 
   render() {
@@ -150,30 +141,6 @@ export default class RegisterForm extends Component {
     );
   }
 
-  async makeLoginCall(selectedButton) {
-    var data = {
-      mcgillID: this.state.idtext,
-      loginAsWlkr: !selectedButton
-    }
-    try {
-      let response = await fetch(
-        global.API_ENDPOINT + "login/" + data.mcgillID + "/" + data.loginAsWlkr,
-        {
-          method: "POST"
-        }
-      );
-      if (response.status >= 200 && response.status < 300) {
-        let responseJson = await response.json()
-        return responseJson;
-      }
-      else {
-        alert("Unsuccesful" + response.status);
-      }
-    } catch (errors) {
-      alert(errors);
-    }
-  }
-
   async makeRegisterCall(selectedButton) {
     if (this.bothValid()) {
       var data = {
@@ -182,10 +149,9 @@ export default class RegisterForm extends Component {
         regAsWlkr: !selectedButton
       }
     }
-    console.log("hitting: " + global.API_ENDPOINT + "register/" + data.mcgillID + "/" + data.phoneNo + "/" + data.regAsWlkr);
     try {
       let response = await fetch(
-        global.API_ENDPOINT + "register/" + data.mcgillID + "/" + data.phoneNo + "/" + data.regAsWlkr,
+        config.backendUrls.registerAPI + "/" + data.mcgillID + "/" + data.phoneNo + "/" + data.regAsWlkr,
         {
           method: "POST"
         }

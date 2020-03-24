@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import RegisterForm from './src/components/Register/RegisterForm';
-import LoginForm from './src/components/Login/LoginForm'
 import { createStackNavigator, createAppContainer, HeaderBackButton } from 'react-navigation';
 import SplashScreen from './src/components/Splash/SplashScreen';
 import StudentDash from './src/components/Dashboard/Student/StudentDash';
 import LocationEntry from './src/components/Dashboard/Student/LocationPicker/LocationEntry';
+import StudentRoute from './src/components/RouteView/Student/StudentRoute';
 import Globals from './src/components/Globals';
 
 class HomeScreen extends Component {
@@ -33,20 +33,6 @@ class RegisterScreen extends Component {
   }
 }
 
-class LoginScreen extends React.Component {
-  static navigationOptions = {
-    title: "Login",
-    headerLeft: (
-      <HeaderBackButton onPress={() => (alert("No back action yet!"))} />
-    )
-  }
-  render() {
-    return (
-      <LoginForm />
-    );
-  }
-}
-
 class StudentDashboardScreen extends React.Component {
   static navigationOptions = {
     header: null
@@ -65,9 +51,20 @@ class LocationEntryScreen extends React.Component {
       <HeaderBackButton onPress={() => (alert("No back action yet!"))} />
     )
   }
-  render(){
-    return(
-      <LocationEntry/>
+  render() {
+    return (
+      <LocationEntry navigation={this.props.navigation} />
+    );
+  }
+}
+
+class StudentRouteScreen extends React.Component {
+  static navigationOptions = {
+    header: null,
+  }
+  render() {
+    return (
+      <StudentRoute navigation={this.props.navigation} />
     );
   }
 }
@@ -77,12 +74,12 @@ const RootStack = createStackNavigator(
   {
     Splash: HomeScreen,
     Register: RegisterScreen,
-    Login: LoginScreen,
     StudentDash: StudentDashboardScreen,
-    LocationEntry:LocationEntryScreen
+    LocationEntry: LocationEntryScreen,
+    StudentRoute: StudentRouteScreen
   },
   {
-    initialRouteName: 'LocationEntry'
+    initialRouteName: 'Register'
   }
 );
 
@@ -91,7 +88,7 @@ const AppContainer = createAppContainer(RootStack);
 export default class App extends Component {
   render() {
     //Set up all the global variables. 
-    Globals(); 
+    Globals();
     return (
       <AppContainer />
     );
