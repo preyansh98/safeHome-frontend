@@ -18,4 +18,4 @@ This project is made in React Native!
 
 A short demo of the product featuring only the Student side of things: 
 
-![](https://im2.ezgif.com/tmp/ezgif-2-8ca91cc2515a.gif)
+![](https://i.imgur.com/NP8m4nm.gif)
