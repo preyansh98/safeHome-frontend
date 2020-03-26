@@ -11,7 +11,9 @@ This project is made in React Native, with live testing done using Expo as the p
 
 #### APIs Used
 
-Special thanks to the GMP API for Geocoding, Geolocation, Place Autocomplete, and Directions API. 
+Special thanks to the [Google Maps API](https://developers.google.com/maps/documentation) for Geocoding, Geolocation, Place Autocomplete, and Directions API. 
+
+Acknowledgement to [Native Base](https://nativebase.io/) as well for the design of some components. 
 
 The SafeHome API is used as the backend for this project. Refer to [documentation](http://safe-home.herokuapp.com/swagger-ui.html). 
 
