@@ -13,7 +13,7 @@ export default class LocationView extends Component{
     render(){
         return(
             <Container>
-            <Header />
+            <Header style = {{backgroundColor: '#1a0000'}} transparent translucent/>
             <Content>
               <Item>
                 <Input placeholder="Enter your pickup address" onTouchStart={()=>this.props.navigation.navigate('LocationEntry')}/>

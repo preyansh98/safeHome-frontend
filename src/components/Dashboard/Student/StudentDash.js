@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Text, StyleSheet, Dimensions, View, ScrollView} from 'react-native';
 import MapComponent from './Maps/MapComponent';
 import LocationView from './LocationPicker/LocationView';
+import { Icon, Button } from 'native-base';
 
 const {width, height} = Dimensions.get('screen'); 
 
@@ -21,7 +22,7 @@ export default class StudentDash extends Component{
                     alwaysBounceVertical
                 >
                 <View style = {styles.mapContainer}>
-                    <MapComponent/>
+                    <MapComponent navigation = {this.props.navigation}/>
                 </View>
                 <View style = {styles.locationContainer}>
                    <LocationView navigation={this.props.navigation}/>

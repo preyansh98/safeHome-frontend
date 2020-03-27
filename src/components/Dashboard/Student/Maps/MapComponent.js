@@ -4,6 +4,7 @@ import MapView from 'react-native-maps';
 import { GMAPS_API_KEY } from 'react-native-dotenv';
 import MapMarkers from './MapMarkers';
 import MapViewDirections from 'react-native-maps-directions';
+import {Icon, Button, Text} from 'native-base';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -80,7 +81,7 @@ export default class MapComponent extends Component {
   }
 
   renderPolygon = () => {
-    if (this.props.markers_visible) {
+    if (this.state.ready && this.props.markers_visible) {
       return (
         <MapViewDirections
           origin={this.props.markers_pickup_lat + "," + this.props.markers_pickup_lng}
@@ -119,8 +120,16 @@ export default class MapComponent extends Component {
               dest_lng={this.props.markers_dest_lng != null ? this.props.markers_dest_lng : -1} />
 
             {this.renderPolygon()}
-
           </MapView>
+          {this.props.navigation && 
+          <Button rounded dark style={styles.backButton}
+            onPress={(e) => {
+              e.preventDefault();
+              this.props.navigation.goBack();
+            }}>
+            <Icon name='md-arrow-round-back' />
+          </Button>
+          }
         </View>
       </View>
     );
@@ -133,5 +142,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   contentContainer: {
+  },
+  backButton: {
+    position: 'absolute',
+    top: '10%',
+    left: '5%'
   }
 });

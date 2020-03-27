@@ -87,6 +87,7 @@ export default class StudentRoute extends Component {
                             markers_pickup_lng={this.state.pickup_lng}
                             markers_dest_lat={this.state.dest_lat}
                             markers_dest_lng={this.state.dest_lng}
+                            navigation = {this.props.navigation}
                         />
                     </View>
                     <View style={styles.locationContainer}>
